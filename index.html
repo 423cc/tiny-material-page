@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <script src="./js/jquery.js"></script>
+    <script src="./js/bootstrap-treeview.js"></script>
+    <!--<script src="./css/bootstrap-treeview.min.css"></script>-->
+    <link href="./css/bootstrap.css" rel="stylesheet">
+    <link href="./css/bootstrap-table.css" rel="stylesheet">
+    <script src="./js/bootstrap-table.js"></script>
+    <style type="text/css">
+        .glyphicon-plus {
+            float: right;
+        }
+    </style>
+    <script src="./js/index.js"></script>
+</head>
+
+<body>
+<script type="text/javascript">
+
+
+	// Steel
+	var data_steel = [{
+		id: 1,
+		name: 'Steel 1',
+		prn: '$1',
+		ys: '100',
+		ts: '200',
+		el: '30',
+		r: 'r1',
+		n: 'n1'
+	}, {
+		id: 2,
+		name: 'Steel 2',
+		prn: '$2',
+		ys: '100',
+		ts: '200',
+		el: '30',
+		r: 'r2',
+		n: 'n2'
+	}, {
+		id: 3,
+		name: 'Steel 3',
+		prn: '$3',
+		ys: '100',
+		ts: '200',
+		el: '30',
+		r: 'r3',
+		n: 'n3'
+	}];
+
+	// ABS
+	var data_abs = [{
+		id: 1,
+		name: 'ABS 1',
+		prn: '$1',
+		ys: '100',
+		ts: '200',
+		el: '30',
+		r: 'r1',
+		n: 'n1'
+	}, {
+		id: 2,
+		name: 'ABS 2',
+		prn: '$2',
+		ys: '100',
+		ts: '200',
+		el: '30',
+		r: 'r2',
+		n: 'n2'
+	}, {
+		id: 3,
+		name: 'ABS 3',
+		prn: '$3',
+		ys: '100',
+		ts: '200',
+		el: '30',
+		r: 'r3',
+		n: 'n3'
+	}];
+
+	// PP
+	var data_pp = [{
+		id: 1,
+		name: 'PP 1',
+		prn: '$1',
+		ys: '100',
+		ts: '200',
+		el: '30',
+		r: 'r1',
+		n: 'n1'
+	}, {
+		id: 2,
+		name: 'PP 2',
+		prn: '$2',
+		ys: '100',
+		ts: '200',
+		el: '30',
+		r: 'r2',
+		n: 'n2'
+	}, {
+		id: 3,
+		name: 'PP 3',
+		prn: '$3',
+		ys: '100',
+		ts: '200',
+		el: '30',
+		r: 'r3',
+		n: 'n3'
+	}];
+
+	_ajaxGetClassificaton().then(function (response) {
+
+    });
+
+	// table data
+	var data_Material = data_steel.concat(data_abs).concat(data_pp);
+
+	$(function () {
+		$('#tree').treeview({
+			color: "#428bca",
+			level: 5,
+			expandIcon: "glyphicon glyphicon-triangle-right",
+			enableLinks: true,
+			selectable: false,
+			collapseIcon: "glyphicon glyphicon-triangle-bottom",
+			onNodeSelected: function (event, data) {
+				if (data.nodeId === 0) {
+					$('#table').bootstrapTable("load", data_Material);
+				} else if (data.nodeId === 1) {
+					$('#table').bootstrapTable("load", data_steel);
+				} else if (data.nodeId === 2) {
+					$('#table').bootstrapTable("load", data_abs);
+				} else if (data.nodeId === 3) {
+					$('#table').bootstrapTable("load", data_pp);
+				}
+				console.log("selected");
+			},
+			onMouseDown: function (event, node) {
+				console.log("right click")
+			},
+			data: getTree()
+		});
+
+
+		function getTree() {
+			// Some logic to retrieve, or generate tree structure
+			var data = [
+				{
+					nodeId: 0,
+					text: "Material",
+					icon: "glyphicon glyphicon-plus",
+					href: "#node-1",
+					// selectable: false,
+					nodes: [
+						{
+							nodeId: 1,
+							classificationId: 1212,
+							text: "Steel",
+							// selectable: false,
+							// href: "http://www.baidu.com"
+							icon: 'glyphicon glyphicon-plus'
+						},
+						{
+							nodeId: 2,
+							text: "ABS",
+							// selectable: false,
+							// href: "#node-2"
+							icon: 'glyphicon glyphicon-plus'
+						},
+						{
+							nodeId: 3,
+							text: "PP",
+							// selectable: false,
+							// href: "#node-3"
+							icon: 'glyphicon glyphicon-plus'
+						}
+					]
+				}
+			];
+			return data;
+		}
+
+		// table component
+
+		$('#table').bootstrapTable({
+			columns: [{
+				field: 'select',
+				checkbox: 'true',
+				title: 'select'
+			}, {
+				field: 'name',
+				title: 'Material'
+			}, {
+				field: 'prn',
+				title: 'PRN'
+			}, {
+				field: 'ys',
+				title: 'YS(Mpa)'
+			}, {
+				field: 'ts',
+				title: 'TS(Mpa)'
+			}, {
+				field: 'el',
+				title: 'EL(%)'
+			}, {
+				field: 'r',
+				title: 'r'
+			}, {
+				field: 'n',
+				title: 'n'
+			}],
+			data: data_Material
+		})
+
+	})
+
+
+</script>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active" aria-current="page">Classification</li>
+                </ol>
+            </nav>
+
+            <div id="tree"></div>
+        </div>
+
+        <div class="col-md-8">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active" aria-current="page">Result</li>
+                </ol>
+            </nav>
+            <table id="table"></table>
+            <button type="button" id="compareButton" class="btn btn-primary" style="margin-top:20px;float: right">对比
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+
+	$(document).ready(function () {
+
+		$(document).on('click', function (e) {
+			var target = e.target;
+			if (target.className === 'icon node-icon glyphicon glyphicon-plus') {
+				console.log(" plus ");
+				// window.location.reload();
+				// do something....
+			}
+
+			// if(target.id === "compareButton"){
+			// 	window.location.href="./comparePage.html";
+			// }
+		})
+
+	})
+
+</script>
+</body>
+</html>
